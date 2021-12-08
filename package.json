@@ -1,13 +1,17 @@
 {
   "name": "tokenkid-contract",
   "version": "1.0.0",
-  "description": "tokenkid factory",
+  "description": "tokenkid factory contract",
   "main": "index.js",
   "scripts": {
+    "compile": "truffle compile",
+    "migrate": "truffle migrate",
+    "deploy:development": "truffle deploy --network development",
+    "deploy:development:reset": "truffle deploy --network development --reset",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "@victorjambo",
+  "license": "MIT",
   "dependencies": {
     "@openzeppelin/contracts": "^4.4.0",
     "@truffle/hdwallet-provider": "^2.0.0"
