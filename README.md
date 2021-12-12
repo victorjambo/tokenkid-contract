@@ -10,6 +10,19 @@ Deployed via [Remix](https://remix.ethereum.org/)
 
 
 
+## TO DO Improvements before deploy to mainnet
+1. Line by line review of the contract
+2. Security Audit
+3. Write tests
+4. Abstract `enum ERC20TokenSymbol` from `TokenKidFactory` contract
+5. make `TokenKidFactory` an upgradable smart contract.
+    * This will separate logic and data. ERC20 contract addresses are hard coded in `getERC20TokenSymbolByValue`, Incase one of the addresses changed we would have to deploy a new contract.
+    * [Resource](https://medium.com/quillhash/how-to-write-upgradable-smart-contracts-in-solidity-d8f1b95a0e9a)  
+
+
+
+
+# Contract Function documentation
 ## `TokenKidFactory`
 
 Factory to create/mint ERC721 Tokens
