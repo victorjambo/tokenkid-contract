@@ -14,6 +14,15 @@ contract TokenKidFactory is ERC721URIStorage {
 
     Counters.Counter private _tokenIdCounter;
 
+    enum ERC20TokenSymbol {
+        cUSD,
+        cEUR,
+        cGLD,
+        mCELO,
+        mCUSD,
+        mCEUR
+    }
+
     struct TokenKid {
         uint256 tokenId;
         string tokenName;
@@ -23,6 +32,7 @@ contract TokenKidFactory is ERC721URIStorage {
         string tokenURI;
         bool isOnSale;
         string tokenDesc;
+        ERC20TokenSymbol erc20TokenSymbol;
     }
 
     mapping(uint256 => TokenKid) public tokenKids;
@@ -66,7 +76,8 @@ contract TokenKidFactory is ERC721URIStorage {
         string memory _tokenName,
         uint256 _price,
         string memory _tokenURI,
-        string memory _tokenDesc
+        string memory _tokenDesc,
+        uint256 _tokenSymbol
     ) public {
         // Safe Mint ERC721 token
         uint256 tokenId = _tokenIdCounter.current();
@@ -77,6 +88,9 @@ contract TokenKidFactory is ERC721URIStorage {
         // emit event after minting token
         emit Minted(tokenId, msg.sender, _tokenName, _price, _tokenURI);
 
+        // ERC20 Token Symbol
+        ERC20TokenSymbol tokenSymbol = ERC20TokenSymbol(_tokenSymbol);
+
         // update tokenKids mapping with newly minted token
         tokenKids[tokenId] = TokenKid(
             tokenId,
@@ -86,17 +100,18 @@ contract TokenKidFactory is ERC721URIStorage {
             _price,
             _tokenURI,
             true,
-            _tokenDesc
+            _tokenDesc,
+            tokenSymbol
         );
     }
 
     /// @notice Transfer ownership of ERC721 token and Transfer
     /// ERC20 tokens to owner.
     /// @param _tokenId NFT Token Id.
-    /// @param token ERC20 Token contract address.
+    /// @param _tokenSymbol ERC20 Token contract address.
     /// @dev We Transfer ERC20 Tokens to owner of the NFT
     /// Hence The ERC20 Token address.
-    function buyToken(uint256 _tokenId, address token)
+    function buyToken(uint256 _tokenId, uint8 _tokenSymbol)
         public
         payable
         onlyExisting(_tokenId)
@@ -121,6 +136,7 @@ contract TokenKidFactory is ERC721URIStorage {
         _transfer(tokenkid.owner, msg.sender, _tokenId);
 
         // Transfer Coin worth Price of Token bought
+        address token = getERC20TokenSymbolByValue(_tokenSymbol);
         require(
             IERC20(token).transferFrom(msg.sender, tokenkid.owner, _price),
             "COIN TRANFER FAILED"
@@ -213,12 +229,47 @@ contract TokenKidFactory is ERC721URIStorage {
         tokenKids[_tokenId] = tokenkid;
     }
 
+    /// @notice Delete NFT Token
+    /// @param _tokenId NFT Token Id.
     function burnToken(uint256 _tokenId)
         public
         onlyExisting(_tokenId)
         onlyTokenOrContractOwner(_tokenId)
     {
         _burn(_tokenId);
+    }
+
+    /// @notice Represent Enums as Strings
+    /// @param _tokenSymbol type of ERC20TokenSymbol.
+    function getERC20TokenSymbolByValue(uint8 _tokenSymbol)
+        public
+        pure
+        returns (address)
+    {
+        // Error handling for input
+        require(uint8(_tokenSymbol) <= 6, "ERC20 TOKEN KEY OUT OF RANGE");
+
+        ERC20TokenSymbol tokenSymbol = ERC20TokenSymbol(_tokenSymbol);
+
+        // Loop through possible options
+        if (ERC20TokenSymbol.cUSD == tokenSymbol)
+            return
+                abi.encode("0x874069fa1eb16d44d622f2e0ca25eea172369bc1");
+        if (ERC20TokenSymbol.cEUR == tokenSymbol)
+            return
+                abi.encode("0x10c892a6ec43a53e45d0b916b4b7d383b1b78c0f");
+        if (ERC20TokenSymbol.cGLD == tokenSymbol)
+            return
+                abi.encode("0xf194afdf50b03e69bd7d057c1aa9e10c9954e4c9");
+        if (ERC20TokenSymbol.mCELO == tokenSymbol)
+            return
+                abi.encode("0x653cc2cc0be398614bad5d5328336dc79281e246");
+        if (ERC20TokenSymbol.mCUSD == tokenSymbol)
+            return
+                abi.encode("0x3a0ea4e0806805527c750ab9b34382642448468d");
+        if (ERC20TokenSymbol.mCEUR == tokenSymbol)
+            return
+                abi.encode("0x0d9b4311657003251d1efa085e74f761185f271c");
     }
 
     /// @notice Modifier to check if token exists
@@ -240,7 +291,10 @@ contract TokenKidFactory is ERC721URIStorage {
     /// @param _tokenId NFT Token Id.
     modifier onlyTokenOrContractOwner(uint256 _tokenId) {
         address tokenOwner = ownerOf(_tokenId);
-        require(tokenOwner == msg.sender && _contractOwner == msg.sender, "NOT OWNER");
+        require(
+            tokenOwner == msg.sender && _contractOwner == msg.sender,
+            "NOT OWNER"
+        );
         _;
     }
 }
