@@ -6,6 +6,7 @@ TokenKid is simple an NFT Marketplace built on [Celo](https://celo.org)
 
 Built on [Truffle](https://trufflesuite.com/docs) and [Ganache](https://github.com/trufflesuite/ganache)
 
+Deployed via [Remix](https://remix.ethereum.org/)
 
 
 
