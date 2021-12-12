@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "compile": "truffle compile",
+    "console": "truffle console",
     "migrate": "truffle migrate",
     "deploy:development": "truffle deploy --network development",
     "deploy:development:reset": "truffle deploy --network development --reset",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "truffle test"
   },
   "author": "@victorjambo",
   "license": "MIT",

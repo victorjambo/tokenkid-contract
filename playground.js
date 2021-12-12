@@ -17,3 +17,5 @@ tokenkid.getTokenPriceHistory(1)
 tokenkid.changeTokenPrice(0, '2000000000000000000')
 
 tokenkid.toggleOnSale(0)
+
+tokenkid.burnToken(1)
