@@ -213,6 +213,9 @@ contract TokenKidFactory is ERC721URIStorage {
         tokenKids[_tokenId] = tokenkid;
     }
 
+    /// @notice Delete NFT Token
+    /// @param _tokenId NFT Token Id.
+    /// @dev Can only be deleted by token owner of smart contract owner
     function burnToken(uint256 _tokenId)
         public
         onlyExisting(_tokenId)
@@ -236,11 +239,14 @@ contract TokenKidFactory is ERC721URIStorage {
         _;
     }
 
-    /// @notice Modifier to check if msg.sender is owner of token
+    /// @notice Modifier to check if msg.sender is owner of token or smart contract owner
     /// @param _tokenId NFT Token Id.
     modifier onlyTokenOrContractOwner(uint256 _tokenId) {
         address tokenOwner = ownerOf(_tokenId);
-        require(tokenOwner == msg.sender && _contractOwner == msg.sender, "NOT OWNER");
+        require(
+            tokenOwner == msg.sender && _contractOwner == msg.sender,
+            "NOT OWNER"
+        );
         _;
     }
 }

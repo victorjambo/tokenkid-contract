@@ -10,6 +10,17 @@ Deployed via [Remix](https://remix.ethereum.org/)
 
 
 
+### To do Improvements before deploy to mainnet
+1. Line by line review of the contract
+2. Security Audit
+3. Write tests
+5. Make `TokenKidFactory` an upgradable smart contract.
+    * This will separate logic and data.
+    * [Resource](https://medium.com/quillhash/how-to-write-upgradable-smart-contracts-in-solidity-d8f1b95a0e9a)
+
+
+
+
 ## `TokenKidFactory`
 
 Factory to create/mint ERC721 Tokens
@@ -28,6 +39,8 @@ Modifier to check if TokenId exists
 ### `onlyOwner(uint256 _tokenId)` (internal)
 Modifier to check if Token is owned by msg.sender
 
+### `onlyTokenOrContractOwner` (internal)
+Modifier to check if msg.sender is owner of token or smart contract owner
 
 ### `safeMint(string _tokenName, uint256 _price, string _tokenURI)` (public)
 Used to create/mint a token.
@@ -41,11 +54,12 @@ This a payable function, remember to send price in msg.value.
 ### `getMintedToken(uint256 _tokenId)` (public)
 Get a Minted Token given the _tokenId
 
-Setters-----------------------------------------------------------------
-
 ### `changeTokenPrice(uint256 _tokenId, uint256 _price)` (public)
 Update NFT Price
 
 
 ### `toggleOnSale(uint256 _tokenId)` (public)
 Update NFT On sale Availability
+
+### `burnToken(uint256 _tokenId)` (public)
+Delete NFT Token
