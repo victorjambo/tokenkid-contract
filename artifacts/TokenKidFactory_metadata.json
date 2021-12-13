@@ -105,6 +105,38 @@
 						"internalType": "uint256",
 						"name": "tokenId",
 						"type": "uint256"
+					}
+				],
+				"name": "TokenBurned",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "_price",
+						"type": "uint256"
+					}
+				],
+				"name": "TokenChangePrice",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
 					},
 					{
 						"indexed": true,
@@ -693,6 +725,12 @@
 				"balanceOf(address)": {
 					"details": "See {IERC721-balanceOf}."
 				},
+				"burnToken(uint256)": {
+					"details": "Can only be deleted by token owner of smart contract owner",
+					"params": {
+						"_tokenId": "NFT Token Id."
+					}
+				},
 				"buyToken(uint256,address)": {
 					"details": "We Transfer ERC20 Tokens to owner of the NFT Hence The ERC20 Token address.",
 					"params": {
@@ -776,12 +814,21 @@
 				"Minted(uint256,address,string,uint256,string)": {
 					"notice": "Event emitted after minting an ERC721 token."
 				},
+				"TokenBurned(uint256)": {
+					"notice": "Event emitted after burning token."
+				},
+				"TokenChangePrice(uint256,uint256)": {
+					"notice": "Event emitted after changing token price."
+				},
 				"TokenTransfered(uint256,address)": {
 					"notice": "Event emitted after buying a token."
 				}
 			},
 			"kind": "user",
 			"methods": {
+				"burnToken(uint256)": {
+					"notice": "Delete NFT Token"
+				},
 				"buyToken(uint256,address)": {
 					"notice": "Transfer ownership of ERC721 token and Transfer ERC20 tokens to owner."
 				},
@@ -921,11 +968,11 @@
 			]
 		},
 		"TokenKidFactory.sol": {
-			"keccak256": "0x063028ff135bedd687c5972cac3e0e84995a512cd4400f6a44566c5d154b1803",
+			"keccak256": "0xecec42ec38d3c61838f95fb3d6ec272b020bd3d5d51446e1b46f06b6c5579e63",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://625a8e33da346c39ba3ce183dd740d088ad515670c8d26bbcfbfa3cb4ae0684e",
-				"dweb:/ipfs/QmPRAZ3g7YNSQYeNXDVTomax2JHo5W2BycQ72A9vLFZZ5Z"
+				"bzz-raw://bcc02b43112305af8f38c0010d08e2f9e8321fead789cf511916e9eaa0e06b59",
+				"dweb:/ipfs/QmQCugGVTS1YVowQ7FcgMRzbvTzPs95H5ZDRnq6cUWJ3PG"
 			]
 		}
 	},

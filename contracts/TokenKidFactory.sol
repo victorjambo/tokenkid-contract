@@ -52,6 +52,12 @@ contract TokenKidFactory is ERC721URIStorage {
     /// token has been purchased
     event TokenTransfered(uint256 indexed tokenId, address indexed newOwner);
 
+    /// @notice Event emitted after burning token.
+    event TokenBurned(uint256 indexed tokenId);
+
+    /// @notice Event emitted after changing token price.
+    event TokenChangePrice(uint256 indexed tokenId, uint256 _price);
+
     /// @notice Used to initialize the TokenKid contract
     constructor() ERC721("TokenKid", "KID") {
         _contractOwner = msg.sender;
@@ -195,6 +201,8 @@ contract TokenKidFactory is ERC721URIStorage {
         tokenPriceHistory[_tokenId].push(
             TokenPriceHistory(_tokenId, block.timestamp, _prevPrice, _price)
         );
+
+        emit TokenChangePrice(_tokenId, _price);
     }
 
     /// @notice Update NFT On sale Availability
@@ -222,6 +230,7 @@ contract TokenKidFactory is ERC721URIStorage {
         onlyTokenOrContractOwner(_tokenId)
     {
         _burn(_tokenId);
+        emit TokenBurned(_tokenId);
     }
 
     /// @notice Modifier to check if token exists
